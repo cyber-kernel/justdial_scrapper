@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phantom JD Scraper & Webizer CRM</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="brand-section">
+      <div class="brand-logo">W</div>
+      <div class="brand-text">
+        <h1>
+          Phantom JD Scraper & CRM
+          <a href="https://webizer.vercel.app/" target="_blank" class="badge-webizer">Webizer Agency ↗</a>
+        </h1>
+        <p>Direct Client Acquisition Engine for Web Development Services</p>
+      </div>
+    </div>
+
+    <!-- Header Stats -->
+    <div class="header-stats">
+      <div class="stat-pill">
+        <small>Total Leads</small>
+        <b id="stat-total">0</b>
+      </div>
+      <div class="stat-pill hot">
+        <small>🎯 No Website (Hot Leads)</small>
+        <b id="stat-no-website">0</b>
+      </div>
+      <div class="stat-pill">
+        <small>Contacted</small>
+        <b id="stat-contacted">0</b>
+      </div>
+      <div class="stat-pill success">
+        <small>Won / Closed</small>
+        <b id="stat-won">0</b>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <div class="main-container">
+
+    <!-- Control Cards Grid -->
+    <div class="control-grid">
+
+      <!-- Left Card: Scraper Controls -->
+      <div class="card">
+        <div class="card-title">
+          <span>⚡ Lead Extraction Setup</span>
+          <span id="scrape-status-badge" class="badge badge-has-website">Status: Ready</span>
+        </div>
+
+        <form id="scraper-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Search Keyword / Industry</label>
+              <input type="text" id="input-keyword" placeholder="e.g. Dental Clinic, Gyms, Architects..." required>
+            </div>
+            <div class="form-group">
+              <label>Target Location (City / Area)</label>
+              <input type="text" id="input-location" placeholder="e.g. Thane, Mumbai, Pune, Bangalore..." required>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label style="display:flex; justify-content:space-between;">
+              <span>Direct Justdial URLs (Bulk Mode)</span>
+              <a href="#" id="toggle-bulk-urls" style="color:var(--accent); text-decoration:none; font-size:11px;">+ Paste Custom URLs</a>
+            </label>
+            <textarea id="input-bulk-urls" rows="2" style="display:none;" placeholder="Paste Justdial search URLs here (one per line)..."></textarea>
+          </div>
+
+          <div class="form-row" style="align-items:flex-end;">
+            <div class="form-group">
+              <label>Extraction Limit</label>
+              <select id="select-limit-type">
+                <option value="All">Scrape All Visible Results</option>
+                <option value="Limit">Set Custom Limit</option>
+              </select>
+            </div>
+            <div class="form-group" id="custom-limit-wrap" style="display:none;">
+              <label>Max Leads</label>
+              <input type="number" id="input-limit-num" placeholder="e.g. 50" min="1" value="50">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <div class="action-buttons">
+              <button type="submit" id="btn-start-scrape" class="btn-primary">
+                🚀 Start Scraping
+              </button>
+              <button type="button" id="btn-stop-scrape" class="btn-stop" style="display:none;">
+                ⏹ Stop Scraping
+              </button>
+              <button type="button" id="btn-resume-scrape" class="btn-outline">
+                ⏸ Resume
+              </button>
+            </div>
+            <span id="scrape-progress-text" style="font-size:12px; color:var(--text-muted);">0 leads gathered</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right Card: Outreach Strategy Engine -->
+      <div class="card">
+        <div class="card-title">
+          <span>🧠 Webizer Psychological Outreach Engine</span>
+          <a href="https://webizer.vercel.app/" target="_blank" style="color:#60a5fa; font-size:11px; text-decoration:none;">webizer.vercel.app</a>
+        </div>
+
+        <div class="form-group">
+          <label>Select Cold WhatsApp Strategy</label>
+          <select id="select-outreach-template">
+            <!-- Populated from templates.js -->
+          </select>
+        </div>
+
+        <div class="template-box">
+          <div class="template-tag" id="template-tag-badge">Strategy</div>
+          <div id="template-preview-text">Select an outreach template to view live psychological strategy...</div>
+        </div>
+
+        <div style="margin-top: 10px; display:flex; justify-content:space-between; align-items:center;">
+          <small style="color:var(--text-muted); font-size:11px;">
+            💡 Clicking WhatsApp in any lead table row will automatically personalize this script with their Business Name, Area, and Review counts!
+          </small>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CRM Sales & Pipeline Manager -->
+    <div class="crm-section">
+      
+      <!-- Toolbar -->
+      <div class="crm-toolbar">
+        
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+          <button class="tab-btn active" data-filter="all">All Leads (<span id="count-all">0</span>)</button>
+          <button class="tab-btn hot-tab" data-filter="no_website">🎯 NO Website (Hot Leads) (<span id="count-no-website">0</span>)</button>
+          <button class="tab-btn" data-filter="has_website">Has Website (<span id="count-has-website">0</span>)</button>
+        </div>
+
+        <!-- CRM Status Filter & Actions -->
+        <div class="crm-controls">
+          <select id="crm-status-filter" class="form-group" style="padding:6px 10px; font-size:12px; border-radius:8px; background:var(--bg-secondary); border:1px solid var(--border-color); color:#fff;">
+            <option value="ALL">All CRM Stages</option>
+            <option value="New">Status: New</option>
+            <option value="Contacted">Status: Contacted</option>
+            <option value="Interested">Status: Interested</option>
+            <option value="Meeting Set">Status: Meeting Set</option>
+            <option value="Closed / Won">Status: Won / Closed</option>
+            <option value="Not Interested">Status: Not Interested</option>
+          </select>
+
+          <div class="search-box">
+            <span>🔍</span>
+            <input type="text" id="crm-search-input" placeholder="Search name, phone, area...">
+          </div>
+
+          <button id="btn-export-csv" class="btn-outline">
+            ⬇ Export CSV
+          </button>
+          <button id="btn-copy-phones" class="btn-outline" title="Copy 10-digit Indian WhatsApp numbers for bulk campaign">
+            📋 Copy Numbers
+          </button>
+          <button id="btn-clear-leads" class="btn-outline" style="color:var(--danger);" title="Clear database">
+            🗑
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Lead Table Container -->
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 40px;">#</th>
+              <th style="width: 140px;">CRM Status</th>
+              <th>Business Name & Category</th>
+              <th style="width: 150px;">Website Status</th>
+              <th style="width: 150px;">Phone / WhatsApp</th>
+              <th style="width: 160px;">1-Click Outreach</th>
+              <th style="width: 100px;">Rating</th>
+              <th style="width: 140px;">Area / City</th>
+              <th>CRM Quick Notes</th>
+              <th style="width: 60px;">Link</th>
+            </tr>
+          </thead>
+          <tbody id="leads-tbody">
+            <!-- Dynamically populated via app.js -->
+          </tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state">
+          <div style="font-size: 32px; margin-bottom: 8px;">📂</div>
+          <h3 style="font-size:16px; margin-bottom:4px; color:#fff;">No leads in pipeline yet</h3>
+          <p>Enter a target keyword and city above, then click <b>Start Scraping</b> to extract fresh business leads from Justdial!</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast">
+    <span id="toast-icon">ℹ️</span>
+    <span id="toast-msg">Notification</span>
+  </div>
+
+  <script src="../js/templates.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>
+

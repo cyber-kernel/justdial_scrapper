@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Phantom JD Scraper & Webizer CRM",
+  "version": "2.0.0",
+  "description": "Justdial Lead Scraper with Website Detection & Webizer CRM for Web Development Client Acquisition",
+  "permissions": [
+    "storage",
+    "tabs",
+    "downloads",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://*.justdial.com/*"
+  ],
+  "action": {
+    "default_icon": {
+      "16": "icons/default_icon_16.png",
+      "32": "icons/default_icon_32.png",
+      "48": "icons/default_icon_48.png",
+      "128": "icons/default_icon_128.png"
+    },
+    "default_title": "Phantom JD Scraper & Webizer CRM"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.justdial.com/*"],
+      "js": ["js/content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": ["https://*.justdial.com/*"],
+      "resources": [
+        "js/page_interceptor.js"
+      ]
+    }
+  ]
+}
+
